@@ -1,5 +1,6 @@
 const express=require('express');
 const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config()
 const app = express();
 const cors=require('cors');
@@ -19,7 +20,8 @@ async function run(){
     try{
         await client.connect();
         const database = client.db("eFoods");
-    const foodsCollection = database.collection("foodItem");
+        const foodsCollection = database.collection("foodItem");
+        const orderCollection = database.collection("Order");
 
 // e-Foods All POST Method Section
 
@@ -27,19 +29,59 @@ app.post('/foodsItem',async(req,res)=>{
     const item=req.body;
     const result= await foodsCollection.insertOne(item)
     res.json(result);
+
+
+})
+
+
+app.post('/confirmOrder',async(req,res)=>{
+    const item=req.body;
+    const result= await orderCollection.insertOne(item)
+    res.json(result);
     console.log(result)
 
 })
-// e-Foods All POST Method Section
+
+
+
+
+
+
+// e-Foods All GET Method Section
+
+
+//  All Food Item Get Method Part
 
     app.get('/foodsItem',async(req,res)=>{
         const result=await foodsCollection.find({}).toArray()
         res.json(result)
-        console.log(result)
+       
     })
 
+     //  All Food Orders Get Method Part
 
+    app.get('/allOrders',async(req,res)=>{
+        const result=await orderCollection.find({}).toArray()
+        res.json(result)
+       
+    })
+     
+    //  All Food Item Delete Method Part
 
+    app.delete('/manageOrder/:id',async(req,res)=>{
+        const id=req.params.id;
+        console.log(id)
+        const query={_id:ObjectId(id)};
+        const result=await orderCollection.deleteOne(query);
+        res.json(result)
+        if (result.deletedCount === 1) {
+            console.log("Successfully deleted one document.");
+          } else {
+            console.log("No documents matched the query. Deleted 0 documents.");
+          }
+        console.log(result)
+
+    })
     }
     finally{
         // await client.close();
