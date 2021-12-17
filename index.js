@@ -22,9 +22,12 @@ async function run(){
         const database = client.db("eFoods");
         const foodsCollection = database.collection("foodItem");
         const orderCollection = database.collection("Order");
+        const reviewCollection = database.collection("Review");
 
 // e-Foods All POST Method Section
 
+
+// FOOD item post method
 app.post('/foodsItem',async(req,res)=>{
     const item=req.body;
     const result= await foodsCollection.insertOne(item)
@@ -33,10 +36,19 @@ app.post('/foodsItem',async(req,res)=>{
 
 })
 
-
+// FOOD item confirm Order method
 app.post('/confirmOrder',async(req,res)=>{
     const item=req.body;
     const result= await orderCollection.insertOne(item)
+    res.json(result);
+    console.log(result)
+
+})
+
+// Customer Review POST method
+app.post('/customerReview',async(req,res)=>{
+    const item=req.body;
+    const result= await reviewCollection.insertOne(item)
     res.json(result);
     console.log(result)
 
