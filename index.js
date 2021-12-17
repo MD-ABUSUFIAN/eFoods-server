@@ -72,9 +72,21 @@ app.post('/customerReview',async(req,res)=>{
 
      //  All Food Orders Get Method Part
 
-    app.get('/allOrders',async(req,res)=>{
+    app.get('/allOrder',async(req,res)=>{
         const result=await orderCollection.find({}).toArray()
         res.json(result)
+       
+    })
+    //  All My Orders Get Method Part
+    app.get('/myOrders',async(req,res)=>{
+        const email = req.query.email;
+        console.log(email)
+        const query = {email:email};
+        console.log(query)
+        const result=await orderCollection.find(query).toArray()
+        res.json(result)
+        console.log(result)
+      
        
     })
      
