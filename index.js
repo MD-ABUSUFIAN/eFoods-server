@@ -86,9 +86,24 @@ app.post('/customerReview',async(req,res)=>{
         const result=await orderCollection.find(query).toArray()
         res.json(result)
         console.log(result)
-      
        
     })
+
+
+
+
+//  All Breakfast Item Get Method Part
+app.get('/specific',async(req,res)=>{
+    const item = req.query.item;
+    console.log(item)
+    const query = {item:item};
+    console.log(query)
+    const result=await foodsCollection.find(query).toArray()
+    res.json(result)
+    console.log(result)
+   
+})
+
      
     //  All Food Item Delete Method Part
 
